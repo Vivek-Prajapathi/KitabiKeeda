@@ -1,141 +1,107 @@
 # 📚 KitabiKeeda — Online Learning Management System
 
-\<p align="center">
-&#x20; \<strong>A modern, interactive Learning Management System (LMS) built with React.\</strong>
-\</p>
+**A modern, interactive Learning Management System (LMS) built with React.**
 
-\<p align="center">
-&#x20; A platform designed to make online learning accessible through course discovery, user authentication, personalized dashboards, and administrative course management.
-\</p>
+KitabiKeeda is an online learning platform designed to make education accessible through course discovery, user authentication, personalized dashboards, and administrative course management.
 
----
+🌐 **Live Application:** [https://kitabi-keeda-omega.vercel.app](https://kitabi-keeda-omega.vercel.app)
 
-## 🌐 Live Demo
-
-**Live Website:** [https://kitabi-keeda-omega.vercel.app](https://kitabi-keeda-omega.vercel.app)
-
-**GitHub Repository:** [https://github.com/Vivek-Prajapathi/KitabiKeeda](https://github.com/Vivek-Prajapathi/KitabiKeeda)
+💻 **GitHub Repository:** [https://github.com/Vivek-Prajapathi/KitabiKeeda](https://github.com/Vivek-Prajapathi/KitabiKeeda)
 
 ---
 
-## 📖 About the Project
+## 📌 Project Overview
 
-**KitabiKeeda** is a web-based Learning Management System (LMS) developed to provide users with an organized and user-friendly online learning experience.
+KitabiKeeda is a React-based Learning Management System that provides separate experiences for students and administrators.
 
-The platform brings together course discovery, user account management, personalized learning dashboards, and administrative tools in one application.
+Users can explore courses, register, log in, manage their profiles, and access their learning dashboard. Administrators can manage users, courses, orders, notifications, coupons, and marketplace content through a dedicated admin dashboard.
 
-It provides separate experiences for regular users and administrators, with protected routes and role-based access control.
+The application uses REST APIs for backend communication and Context API for centralized authentication management.
 
-The application also includes an LMS Marketplace where administrators can manage learning content and related features.
-
-### 🎯 Project Objectives
+## 🎯 Project Objectives
 
 - Build a responsive and user-friendly online learning platform.
-- Provide secure user registration, login, and account activation.
-- Allow users to explore and access available courses.
-- Provide personalized dashboards and profile management.
-- Implement role-based access for users and administrators.
-- Create an administrative interface for managing platform activities.
-- Integrate frontend components with backend APIs using Axios.
+- Implement secure user authentication and authorization.
+- Provide role-based access for users and administrators.
+- Integrate REST APIs using Axios.
+- Develop reusable React components.
+- Implement protected routes and centralized state management.
+- Create an administrative dashboard for managing LMS operations.
 
----
+## ✨ Features
 
-## ✨ Key Features
+### 👨‍🎓 User Features
 
-### 👤 User Features
+- User Registration and Login
+- Account Activation
+- Course Discovery and Exploration
+- Course Details
+- Personalized User Dashboard
+- Profile Management
+- Update Profile Information
+- Update Password
+- Profile Picture Management
+- My Learning Section
+- Protected User Routes
 
-- User registration and login.
-- Account activation.
-- Protected user routes.
-- User dashboard.
-- Course listing and course discovery.
-- Course details pages.
-- Search and filtering of courses.
-- User profile management.
-- Profile information updates.
-- Password management.
-- Profile picture updates.
-- My Learning section.
+### 👨‍💼 Admin Features
 
-### 🛡️ Admin Features
+- Admin Dashboard
+- Admin Overview and Analytics
+- User Management
+- View All Users
+- Delete Users
+- Update User Roles
+- Course Management
+- LMS Marketplace Management
+- Coupon Management
+- Order Management
+- Notification Management
+- Protected Admin Routes
 
-- Dedicated Admin Dashboard.
-- Admin-specific protected routes.
-- User management.
-- View all registered users.
-- Update user roles.
-- Delete users.
-- Admin analytics and overview.
-- Admin notifications.
-- Order management.
-- LMS Marketplace management.
-- Course management.
-- LMS coupon management.
+### 🔐 Authentication and Authorization
 
-### 🛒 LMS Marketplace
+- Context API for centralized authentication state.
+- Axios instance for API communication.
+- Request and response interceptors.
+- Bearer token handling.
+- Protected routes.
+- Role-based authorization.
+- Logout functionality.
 
-- Dedicated LMS Marketplace interface.
-- Course discovery and management.
-- Category-based course organization.
-- Published course listing.
-- Coupon-related functionality.
-- Separate public course browsing and admin marketplace views.
+## 🛠️ Technology Stack
 
----
+| Category             | Technologies               |
+| -------------------- | -------------------------- |
+| Frontend             | React 19                   |
+| Build Tool           | Vite                       |
+| Programming Language | JavaScript (ES6+)          |
+| Markup               | HTML5, JSX                 |
+| Styling              | CSS3, CSS Modules          |
+| Routing              | React Router DOM           |
+| State Management     | Context API                |
+| API Integration      | Axios                      |
+| Authentication       | Token-based Authentication |
+| Backend Integration  | REST APIs                  |
+| Deployment           | Vercel                     |
+| Version Control      | Git and GitHub             |
 
-## 🧰 Technology Stack
-
-### Frontend
-
-| Technology        | Purpose                           |
-| ----------------- | --------------------------------- |
-| HTML5             | Application structure             |
-| CSS3              | Styling and responsive layouts    |
-| JavaScript (ES6+) | Application logic                 |
-| JSX               | Writing UI components             |
-| React 19          | Frontend library                  |
-| React Router DOM  | Client-side routing               |
-| Context API       | Global authentication state       |
-| Axios             | HTTP requests and API integration |
-| Vite              | Development server and build tool |
-
-### Styling
-
-- CSS3
-- CSS Modules
-- Custom CSS components
-- Responsive layouts
-
-### API & Backend Integration
-
-- REST API integration
-- Axios instances
-- Request and response interceptors
-- Bearer token authentication
-- JSON data handling
-- MockAPI backend integration
-
-### Development Tools
-
-- Visual Studio Code
-- Git
-- GitHub
-- Postman
-- npm
-- Vercel
-
----
-
-## 🗂️ Project Folder Structure
-
-The following structure represents the main application source and configuration files.
+## 📂 Project Structure
 
 ```text
 KitabiKeeda/
 │
 ├── public/
-│   ├── favicon.svg
-│   └── icons.svg
+│
+├── screenshots/
+│   ├── home.jpg
+│   ├── courses.jpg
+│   ├── course-details.jpg
+│   ├── login.jpg
+│   ├── Register.jpg
+│   ├── dashboard.jpg
+│   ├── admin-dashboard.jpg
+│   └── marketplace.jpg
 │
 ├── src/
 │   │
@@ -145,16 +111,13 @@ KitabiKeeda/
 │   │   ├── AdminDashboard.jsx
 │   │   ├── AdminHome.jsx
 │   │   ├── AdminLayout.jsx
-│   │   ├── AdminLayout.module.css
 │   │   ├── AdminNotifications.jsx
 │   │   ├── AdminOrders.jsx
 │   │   ├── GetAllUsers.jsx
-│   │   ├── KitabiKeedaAdminTheme.css
+│   │   ├── SingleUser.jsx
 │   │   ├── LMSAdminCoupons.jsx
 │   │   ├── LMSAdminOverview.jsx
-│   │   ├── ManageCourses.jsx
-│   │   ├── SingleUser.jsx
-│   │   └── _admin.module.css
+│   │   └── ManageCourses.jsx
 │   │
 │   ├── api/
 │   │   ├── auth.js
@@ -164,9 +127,6 @@ KitabiKeeda/
 │   │   └── marketplace.js
 │   │
 │   ├── assets/
-│   │   ├── hero.jpg
-│   │   ├── react.svg
-│   │   └── vite.svg
 │   │
 │   ├── components/
 │   │   ├── ApplyLmsCoupon.jsx
@@ -181,17 +141,12 @@ KitabiKeeda/
 │   │
 │   ├── pages/
 │   │   ├── ActivateAccount.jsx
-│   │   ├── CourseDetails.css
 │   │   ├── CourseDetails.jsx
-│   │   ├── Courses.css
 │   │   ├── Courses.jsx
-│   │   ├── Dashboard.css
 │   │   ├── Dashboard.jsx
-│   │   ├── Home.css
 │   │   ├── Home.jsx
 │   │   ├── Instructor.jsx
 │   │   ├── Login.jsx
-│   │   ├── Profile.css
 │   │   ├── Profile.jsx
 │   │   ├── Register.jsx
 │   │   └── RegularCourses.jsx
@@ -204,11 +159,10 @@ KitabiKeeda/
 │   │   ├── ProfileSidebar.jsx
 │   │   ├── UpdateProfileInfo.jsx
 │   │   ├── UpdateProfilePassword.jsx
-│   │   ├── UpdatedProfilePicture.jsx
-│   │   └── _profile.module.css
+│   │   └── UpdatedProfilePicture.jsx
 │   │
-│   ├── App.css
 │   ├── App.jsx
+│   ├── App.css
 │   ├── index.css
 │   └── main.jsx
 │
@@ -220,159 +174,51 @@ KitabiKeeda/
 └── README.md
 ```
 
----
+## 🏗️ Application Architecture
 
-## 📂 Folder Responsibilities
+The application follows a modular React architecture.
 
-| Folder        | Description                                                                       |
-| ------------- | --------------------------------------------------------------------------------- |
-| `admin/`      | Admin dashboard, user management, analytics, orders, and LMS administration.      |
-| `api/`        | API services, Axios instances, authentication requests, and marketplace requests. |
-| `assets/`     | Images, icons, and static assets.                                                 |
-| `components/` | Reusable UI components such as Navbar and ProtectedRoute.                         |
-| `context/`    | Global application state using React Context API.                                 |
-| `hooks/`      | Custom React hooks such as `useAuth`.                                             |
-| `pages/`      | Main application pages, including Home, Login, Register, Courses, and Dashboard.  |
-| `profile/`    | User profile, settings, learning history, and account update components.          |
+- **Pages:** Main application pages such as Home, Login, Register, Courses, and Dashboard.
+- **Components:** Reusable UI components and protected route functionality.
+- **Context:** Centralized authentication state using React Context API.
+- **Hooks:** Custom hooks for reusable application logic.
+- **API:** Separate API modules for authentication, courses, LMS, and marketplace operations.
+- **Admin:** Administrative dashboard and management modules.
+- **Profile:** User profile, settings, and learning-related components.
 
----
+## 🔄 Authentication Flow
 
-## ⚙️ Application Architecture
+1. A user registers using the registration form.
+2. The account activation process is completed.
+3. The user logs in using their credentials.
+4. Authentication APIs communicate with the backend through Axios.
+5. The authentication token is managed by the application.
+6. Context API maintains authentication state.
+7. Protected routes restrict access to authorized users.
+8. Role-based authorization separates user and admin functionality.
+9. Logout clears the authentication state.
 
-KitabiKeeda follows a component-based React architecture.
+## 🌐 API Integration
 
-### 1. Component-Based Architecture
+The application integrates with backend REST APIs using Axios.
 
-The application is divided into reusable components, pages, layouts, and feature-specific folders.
-
-This improves maintainability, readability, and code reusability.
-
-### 2. Routing
-
-React Router DOM is used for navigation between application pages.
-
-The application includes routes for:
-
-- Home
-- Login and Registration
-- Account Activation
-- Courses
-- Course Details
-- User Dashboard
-- Profile
-- Admin Dashboard
-- LMS Marketplace
-
-### 3. Authentication and Authorization
-
-The application uses React Context API to manage authentication-related state.
-
-The authentication implementation includes:
-
-- Login and registration.
-- Account activation.
-- Token-based authentication.
-- Protected routes.
-- Role-based route access.
-- Logout functionality.
-
-The `ProtectedRoute` component helps restrict access to pages based on authentication and authorization conditions.
-
-### 4. API Integration with Axios
-
-Axios is used to communicate with backend REST APIs.
-
-The application separates API logic into dedicated files inside `src/api/`.
-
-The Axios configuration supports:
-
-- Reusable Axios instances.
-- Centralized base URL configuration.
-- JSON request headers.
-- Request interceptors.
-- Bearer token attachment.
-- Response interceptors.
-- Centralized API error logging.
-
----
-
-## 🔐 Authentication Flow
-
-The general authentication flow is:
+**API Base URL:**
 
 ```text
-User
-  |
-  v
-Register / Login
-  |
-  v
-Backend API Request
-  |
-  v
-Authentication Response
-  |
-  v
-Token Handling
-  |
-  v
-Auth Context Update
-  |
-  v
-Protected Routes
-  |
-  v
-User Dashboard
+https://mockapi-mauve.vercel.app/api/v1
 ```
 
-Administrators have access to dedicated administrative routes based on their assigned role.
+API modules are organized separately for maintainability:
 
----
+- `auth.js` — Authentication-related operations.
+- `axios.js` — Shared Axios configuration and interceptors.
+- `course.js` — Course-related API operations.
+- `lms.js` — LMS-related API operations.
+- `marketplace.js` — Marketplace-related API operations.
 
-## 🔌 API Integration
+## 💻 Getting Started
 
-The frontend communicates with the backend using REST APIs.
-
-The API services are organized into separate modules:
-
-| File             | Responsibility                        |
-| ---------------- | ------------------------------------- |
-| `auth.js`        | Authentication-related API operations |
-| `axios.js`       | Shared Axios configuration            |
-| `course.js`      | Regular course API requests           |
-| `lms.js`         | LMS-related API operations            |
-| `marketplace.js` | LMS Marketplace API operations        |
-
-### Example: Axios Instance
-
-```javascript
-import axios from "axios";
-
-const courseAPI = axios.create({
-    baseURL: "https://mockapi-mauve.vercel.app/api/v1",
-    headers: {
-        "Content-Type": "application/json",
-    },
-});
-
-export default courseAPI;
-```
-
-### Example: Fetching Courses
-
-```javascript
-const response = await courseAPI.get("/lms/courses");
-
-const courseList = response.data?.courses || [];
-```
-
-The backend API provides course data that is displayed in the frontend.
-
----
-
-## 💻 Installation and Setup
-
-Follow these steps to run KitabiKeeda locally.
+Follow these steps to run the project locally.
 
 ### Prerequisites
 
@@ -383,31 +229,31 @@ Make sure you have installed:
 - Git
 - Visual Studio Code (recommended)
 
-### Step 1: Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Vivek-Prajapathi/KitabiKeeda.git
 ```
 
-### Step 2: Navigate to the Project
+### 2. Navigate to the Project Folder
 
 ```bash
 cd KitabiKeeda
 ```
 
-### Step 3: Install Dependencies
+### 3. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### Step 4: Start the Development Server
+### 4. Start the Development Server
 
 ```bash
 npm run dev
 ```
 
-### Step 5: Open in Browser
+### 5. Open in Browser
 
 Visit:
 
@@ -415,9 +261,41 @@ Visit:
 http://localhost:5173
 ```
 
----
+## 📸 Screenshots
 
-## 🏗️ Build for Production
+### 🏠 Home Page
+
+
+
+### 📚 Courses Page
+
+
+
+### 📖 Course Details
+
+
+
+### 🔐 Login Page
+
+
+
+### 📝 Registration Page
+
+
+
+### 👨‍🎓 User Dashboard
+
+
+
+### 👨‍💼 Admin Dashboard
+
+
+
+### 🛍️ LMS Marketplace
+
+
+
+## 🚀 Build for Production
 
 To create an optimized production build:
 
@@ -431,128 +309,68 @@ To preview the production build locally:
 npm run preview
 ```
 
-The production-ready files are generated inside the `dist/` directory.
+## ☁️ Deployment
 
----
+The application is deployed using Vercel.
 
-## 🚀 Deployment
+**Live Project:** [https://kitabi-keeda-omega.vercel.app](https://kitabi-keeda-omega.vercel.app)
 
-KitabiKeeda is deployed using **Vercel**.
-
-Deployment configuration:
-
-| Setting          | Value           |
-| ---------------- | --------------- |
-| Platform         | Vercel          |
-| Framework        | Vite            |
-| Build Command    | `npm run build` |
-| Output Directory | `dist`          |
-| Install Command  | `npm install`   |
-| Root Directory   | `./`            |
-
-### Deployment Steps
+To deploy your own version:
 
 1. Push the project to GitHub.
-2. Import the GitHub repository into Vercel.
-3. Select Vite as the framework preset.
-4. Configure the build command and output directory.
-5. Click Deploy.
-6. Vercel builds and hosts the application.
+2. Import the repository into Vercel.
+3. Configure the build settings.
+4. Deploy the application.
 
-Future changes pushed to the connected GitHub branch can trigger automatic deployments.
+Typical Vite build settings:
 
-**Live Application:** [Add your Vercel URL here]
+- Framework Preset: Vite
+- Build Command: `npm run build`
+- Output Directory: `dist`
 
----
-
-## 📸 Screenshots
-
-Screenshots of the application can be added here to demonstrate the user interface.
-
-Suggested screenshots:
-
-- Home Page
-- Registration and Login
-- Courses Page
-- Course Details
-- User Dashboard
-- Profile Management
-- Admin Dashboard
-- LMS Marketplace
-
-To add screenshots, create a folder named `screenshots/` and place your images inside it.
-
-Example:
-
-```markdown
-## 📸 Screenshots
-
-### Home Page
-![Home Page](screenshots/home.jpg)
-
-### Courses
-![Courses Page](screenshots/courses.jpg)
-
-### Course Details
-![Course Details](screenshots/course-details.jpg)
-
-### Login
-![Login](screenshots/login.jpg)
-
-### Register
-![Register](screenshots/Register.jpg)
-
-### User Dashboard
-![User Dashboard](screenshots/dashboard.jpg)
-
-### Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.jpg)
-
-### LMS Marketplace
-![LMS Marketplace](screenshots/marketplace.jpg)
-```
-
----
-
-## 🧠 Concepts and Skills Demonstrated
+## 📚 Concepts and Skills Demonstrated
 
 This project demonstrates practical implementation of:
 
-- React component architecture.
-- Functional components and React Hooks.
-- React Router DOM.
-- Context API for global state management.
-- Custom Hooks.
-- Authentication and Authorization.
-- Protected Routes.
-- Role-Based Access Control.
-- REST API integration.
-- Axios instances and interceptors.
-- CRUD operations.
-- Reusable components.
-- CSS Modules and responsive styling.
-- Git and GitHub version control.
-- Vite production builds.
-- Vercel deployment.
+- React Functional Components
+- JSX and Component Reusability
+- React Hooks
+- Context API
+- Custom Hooks
+- React Router DOM
+- Nested Routing
+- Protected Routes
+- Role-Based Access Control
+- Axios Instance
+- Axios Interceptors
+- REST API Integration
+- Token-Based Authentication
+- JavaScript ES6+
+- Responsive UI Development
+- CSS Modules
+- Git and GitHub
+- Vercel Deployment
 
----
+## 🔮 Future Enhancements
 
-## 👩‍💻 Developer
+- Online payment gateway integration.
+- Course progress tracking.
+- Video-based learning modules.
+- Student performance analytics.
+- Course reviews and ratings.
+- Advanced search and filtering.
+- Real-time notifications.
+
+## 👨‍💻 Developer
 
 **Vivek Prajapathi**
 
-GitHub: [https://github.com/Vivek-Prajapathi](https://github.com/Vivek-Prajapathi)
-
-Project: KitabiKeeda — Learning Management System
-
----
+- GitHub: [Vivek-Prajapathi](https://github.com/Vivek-Prajapathi)
+- Project Repository: [KitabiKeeda](https://github.com/Vivek-Prajapathi/KitabiKeeda)
+- Live Application: [KitabiKeeda](https://kitabi-keeda-omega.vercel.app)
 
 ## 📄 License
 
-This project is currently available as a public GitHub repository. A formal open-source license can be added if the project is intended for reuse or redistribution.
+This project is developed for educational and portfolio purposes.
 
 ---
-
-\<p align="center">
-&#x20; \<strong>KitabiKeeda — Learn, Explore, and Grow. 📚\</strong>
-\</p>
