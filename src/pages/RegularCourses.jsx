@@ -36,9 +36,7 @@ export default function RegularCourses() {
                 setLoading(true);
                 setError("");
 
-                const response = await courseAPI.get(
-                    "/course/get-courses"
-                );
+                const response = await courseAPI.get("/lms/courses");
 
                 if (cancelled) return;
 

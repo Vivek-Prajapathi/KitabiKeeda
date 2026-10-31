@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const courseAPI = axios.create({
-    baseURL: "/api/v1",
+    baseURL: "https://mockapi-mauve.vercel.app/api/v1",
     headers: {
         "Content-Type": "application/json",
     },
