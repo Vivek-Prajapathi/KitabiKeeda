@@ -1,12 +1,42 @@
 # 📚 KitabiKeeda — Online Learning Management System
 
-**A modern, interactive Learning Management System (LMS) built with React.**
+**A modern, interactive Learning Management System (LMS) built with React 19.**
 
 KitabiKeeda is an online learning platform designed to make education accessible through course discovery, user authentication, personalized dashboards, and administrative course management.
 
-🌐 **Live Application:** [https://kitabi-keeda-omega.vercel.app](https://kitabi-keeda-omega.vercel.app)
+🌐 **Live Application:** [KitabiKeeda](https://kitabi-keeda-omega.vercel.app)
 
-💻 **GitHub Repository:** [https://github.com/Vivek-Prajapathi/KitabiKeeda](https://github.com/Vivek-Prajapathi/KitabiKeeda)
+💻 **GitHub Repository:** [KitabiKeeda on GitHub](https://github.com/Vivek-Prajapathi/KitabiKeeda)
+
+---
+
+## 📸 Screenshots
+
+Here is a preview of the application's user interface and major features.
+
+### 🏠 Home Page
+![Home Page](./screenshots/home.jpg)
+
+### 📚 Courses Page
+![Courses Page](./screenshots/courses.jpg)
+
+### 📖 Course Details
+![Course Details](./screenshots/course-details.jpg)
+
+### 🔐 Login Page
+![Login Page](./screenshots/login.jpg)
+
+### 📝 Registration Page
+![Registration Page](./screenshots/Register.jpg)
+
+### 👨‍🎓 User Dashboard
+![User Dashboard](./screenshots/dashboard.jpg)
+
+### 👨‍💼 Admin Dashboard
+![Admin Dashboard](./screenshots/admin-dashboard.jpg)
+
+### 🛍️ LMS Marketplace
+![LMS Marketplace](./screenshots/marketplace.jpg)
 
 ---
 
@@ -71,20 +101,20 @@ The application uses REST APIs for backend communication and Context API for cen
 
 ## 🛠️ Technology Stack
 
-| Category             | Technologies               |
-| -------------------- | -------------------------- |
-| Frontend             | React 19                   |
-| Build Tool           | Vite                       |
-| Programming Language | JavaScript (ES6+)          |
-| Markup               | HTML5, JSX                 |
-| Styling              | CSS3, CSS Modules          |
-| Routing              | React Router DOM           |
-| State Management     | Context API                |
-| API Integration      | Axios                      |
-| Authentication       | Token-based Authentication |
-| Backend Integration  | REST APIs                  |
-| Deployment           | Vercel                     |
-| Version Control      | Git and GitHub             |
+| Category | Technologies |
+|---|---|
+| Frontend | React 19 |
+| Build Tool | Vite |
+| Programming Language | JavaScript (ES6+) |
+| Markup | HTML5, JSX |
+| Styling | CSS3, CSS Modules |
+| Routing | React Router DOM |
+| State Management | Context API |
+| API Integration | Axios |
+| Authentication | Token-based Authentication |
+| Backend Integration | REST APIs |
+| Deployment | Vercel |
+| Version Control | Git and GitHub |
 
 ## 📂 Project Structure
 
@@ -104,7 +134,6 @@ KitabiKeeda/
 │   └── marketplace.jpg
 │
 ├── src/
-│   │
 │   ├── admin/
 │   │   ├── AdminAnalytics.jsx
 │   │   ├── AdminContent.jsx
@@ -261,34 +290,6 @@ Visit:
 http://localhost:5173
 ```
 
-## 📸 Screenshots
-
-### 🏠 Home Page
-![Home Page](./screenshots/home.jpg)
-
-### 📚 Courses Page
-![Courses Page](./screenshots/courses.jpg)
-
-### 📖 Course Details
-![Course Details](./screenshots/course-details.jpg)
-
-### 🔐 Login Page
-![Login Page](./screenshots/login.jpg)
-
-### 📝 Registration Page
-![Registration Page](./screenshots/Register.jpg)
-
-### 👨‍🎓 User Dashboard
-![User Dashboard](./screenshots/dashboard.jpg)
-
-### 👨‍💼 Admin Dashboard
-![Admin Dashboard](./screenshots/admin-dashboard.jpg)
-
-### 🛍️ LMS Marketplace
-![LMS Marketplace](./screenshots/marketplace.jpg)
-
-
-
 ## 🚀 Build for Production
 
 To create an optimized production build:
@@ -368,3 +369,5 @@ This project demonstrates practical implementation of:
 This project is developed for educational and portfolio purposes.
 
 ---
+
+**KitabiKeeda — Learn, Explore, and Grow. 📚**
