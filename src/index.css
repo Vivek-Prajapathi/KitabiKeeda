@@ -1,0 +1,255 @@
+
+/* =========================
+   KITABIKEEDA THEME
+========================= */
+
+:root {
+    --dark-green: #1B211A;
+    --olive: #628141;
+    --sage: #8BAE66;
+    --beige: #EBD5AB;
+
+    --bg: #cee2ca;
+    --surface: #252D22;
+    --surface-light: #303B2A;
+
+    --text: #F5F0E6;
+    --text-muted: #C8CEBF;
+    --border: #46533B;
+
+    --font-main: "Roboto", Arial, sans-serif;
+
+    font-family: var(--font-main);
+    font-size: 16px;
+    color: var(--text);
+    background: var(--bg);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* RESET */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+    min-height: 100%;
+    background: var(--bg);
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+
+    font-family: var(--font-main);
+    font-weight: 400;
+    color: var(--text);
+    background: var(--bg);
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg);
+}
+
+/* HEADINGS */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-main);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    color: black;
+}
+
+h1 {
+    font-size: clamp(30px, 4vw, 42px);
+    margin: 24px 0;
+}
+
+h2 {
+    font-size: 28px;
+    margin: 0 0 16px;
+}
+
+h3 {
+    font-size: 22px;
+    margin: 0 0 12px;
+}
+
+p {
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* LINKS */
+
+a {
+    font-family: var(--font-main);
+    color: var(--sage);
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+a:hover {
+    color: var(--beige);
+}
+
+/* BUTTONS */
+
+button {
+    font-family: var(--font-main);
+    font-size: 15px;
+    font-weight: 600;
+
+    padding: 11px 20px;
+
+    color: #FFFFFF;
+    background: var(--olive);
+
+    border: 1px solid var(--olive);
+    border-radius: 8px;
+
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+button:hover {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: var(--dark-green);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* INPUTS */
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 12px 14px;
+
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-weight: 400;
+
+    color: var(--text);
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #AEB6A5;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--sage);
+    box-shadow: 0 0 0 3px rgba(139, 174, 102, 0.15);
+}
+
+/* LABELS */
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--beige);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* TABLES */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+}
+
+th {
+    padding: 14px;
+    color: var(--dark-green);
+    background: var(--sage);
+    font-weight: 700;
+    text-align: left;
+}
+
+td {
+    padding: 14px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+    background: var(--surface-light);
+}
+
+/* TEXT SELECTION */
+
+::selection {
+    background: var(--sage);
+    color: var(--dark-green);
+}
+
+/* SCROLLBAR */
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--olive) var(--dark-green);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    th,
+    td {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 26px;
+    }
+
+    h2 {
+        font-size: 21px;
+    }
+
+    button {
+        padding: 10px 15px;
+    }
+}
