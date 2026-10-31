@@ -264,34 +264,28 @@ http://localhost:5173
 ## 📸 Screenshots
 
 ### 🏠 Home Page
-
-
+![Home Page](./screenshots/home.jpg)
 
 ### 📚 Courses Page
-
-
+![Courses Page](./screenshots/courses.jpg)
 
 ### 📖 Course Details
-
-
+![Course Details](./screenshots/course-details.jpg)
 
 ### 🔐 Login Page
-
-
+![Login Page](./screenshots/login.jpg)
 
 ### 📝 Registration Page
-
-
+![Registration Page](./screenshots/Register.jpg)
 
 ### 👨‍🎓 User Dashboard
-
-
+![User Dashboard](./screenshots/dashboard.jpg)
 
 ### 👨‍💼 Admin Dashboard
-
-
+![Admin Dashboard](./screenshots/admin-dashboard.jpg)
 
 ### 🛍️ LMS Marketplace
+![LMS Marketplace](./screenshots/marketplace.jpg)
 
 
 
