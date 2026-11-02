@@ -1,123 +1,275 @@
-import { useState } from 'react';
-import { BookOpen, Eye, EyeOff, LockKeyhole, Mail, UserRound } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../App.css";
+import { registerUser } from "../api/auth";
 
-const Register = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [visibleFields, setVisibleFields] = useState({ password: false, confirmPassword: false });
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  const { register } = useAuth();
-  const navigate = useNavigate();
+export default function Register() {
+    const navigate = useNavigate();
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }));
-    setErrors((previous) => ({ ...previous, [name]: '' }));
-  };
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
-  const validate = () => {
-    const nextErrors = {};
-    if (!formData.name.trim()) nextErrors.name = 'Enter your name.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      nextErrors.email = 'Enter a valid email address.';
-    }
-    if (formData.password.length < 6) nextErrors.password = 'Use at least 6 characters.';
-    if (!formData.confirmPassword || formData.password !== formData.confirmPassword) {
-      nextErrors.confirmPassword = 'Passwords do not match.';
-    }
-    setErrors(nextErrors);
-    return Object.keys(nextErrors).length === 0;
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!validate()) return;
+        setMessage("");
 
-    setLoading(true);
-    try {
-      const result = await register(formData.name.trim(), formData.email.trim(), formData.password);
-      if (result?.success) {
-        navigate('/activate-account', {
-          state: {
-            activationToken: result.activationToken,
-            activationCode: result.activationCode,
-            email: formData.email.trim(),
-          },
-        });
-      } else if (result?.message) {
-        setErrors((previous) => ({ ...previous, form: result.message }));
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+        if (!name.trim() || !email.trim() || !password) {
+            setMessage("Please fill all fields.");
+            return;
+        }
 
-  const toggleVisibility = (field) =>
-    setVisibleFields((previous) => ({ ...previous, [field]: !previous[field] }));
+        if (name.trim().length < 4) {
+            setMessage("Name must contain at least 4 characters.");
+            return;
+        }
 
-  return (
-    <div className="auth-page auth-page-register">
-      <div className="auth-card">
-        <Link to="/" className="brand auth-brand">
-          <span className="brand-mark"><BookOpen size={21} /></span>
-          <span>Kitabi<span>Keeda</span></span>
-        </Link>
-        <div className="auth-heading">
-          <span className="auth-heading-icon"><UserRound size={21} /></span>
-          <h1>Create your account</h1>
-          <p>Start building skills that move you forward.</p>
+        try {
+            setLoading(true);
+
+            const userData = {
+                name: name.trim(),
+                email: email.trim(),
+                password,
+            };
+
+            // Send registration request
+            const result = await registerUser(userData);
+
+            console.log("Registration response:", result);
+
+            // Handle possible API response structures
+            const responseData =
+                result?.data?.data ??
+                result?.data ??
+                result;
+
+            const activationToken =
+                responseData?.activationToken ??
+                result?.activationToken;
+
+            const activationCode =
+                responseData?.activationCode ??
+                result?.activationCode;
+
+            // Check whether activation details were returned
+            if (!activationToken || !activationCode) {
+                console.error(
+                    "Activation details missing from response:",
+                    result
+                );
+
+                setMessage(
+                    responseData?.message ||
+                    result?.message ||
+                    "Registration response is missing activation details. Check the console."
+                );
+
+                return;
+            }
+
+            // Store activation details
+            sessionStorage.setItem(
+                "activationToken",
+                activationToken
+            );
+
+            sessionStorage.setItem(
+                "activationCode",
+                activationCode
+            );
+
+            sessionStorage.setItem("email", email.trim());
+
+            // Navigate to Activate Account page
+            navigate("/activate");
+        } catch (error) {
+            console.error(
+                "Registration error:",
+                error.response?.data || error.message
+            );
+
+            setMessage(
+                error.response?.data?.message ||
+                error.response?.data?.error ||
+                "Registration failed. Please try again."
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="auth-container">
+            <h2>Register</h2>
+
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="register-name">
+                    Name:
+                </label>
+
+                <input
+                    id="register-name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
+                    required
+                />
+
+                <label htmlFor="register-email">
+                    Email:
+                </label>
+
+                <input
+                    id="register-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                />
+
+                <label htmlFor="register-password">
+                    Password:
+                </label>
+
+                <input
+                    id="register-password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    required
+                />
+
+                <button
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading ? "Registering..." : "Register"}
+                </button>
+            </form>
+
+            {message && (
+                <p role="alert">{message}</p>
+            )}
         </div>
-        {errors.form && <div className="form-alert" role="alert">{errors.form}</div>}
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          <label htmlFor="register-name">Full name</label>
-          <div className={`input-with-icon ${errors.name ? 'has-error' : ''}`}>
-            <UserRound size={18} />
-            <input id="register-name" name="name" autoComplete="name" value={formData.name} onChange={handleChange} placeholder="Your name" aria-invalid={Boolean(errors.name)} />
-          </div>
-          {errors.name && <span className="field-error">{errors.name}</span>}
+    );
+}
 
-          <label htmlFor="register-email">Email address</label>
-          <div className={`input-with-icon ${errors.email ? 'has-error' : ''}`}>
-            <Mail size={18} />
-            <input id="register-email" name="email" type="email" autoComplete="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" aria-invalid={Boolean(errors.email)} />
-          </div>
-          {errors.email && <span className="field-error">{errors.email}</span>}
 
-          <label htmlFor="register-password">Password</label>
-          <div className={`input-with-icon ${errors.password ? 'has-error' : ''}`}>
-            <LockKeyhole size={18} />
-            <input id="register-password" name="password" type={visibleFields.password ? 'text' : 'password'} autoComplete="new-password" value={formData.password} onChange={handleChange} placeholder="At least 6 characters" aria-invalid={Boolean(errors.password)} />
-            <button type="button" className="input-action" onClick={() => toggleVisibility('password')} aria-label={visibleFields.password ? 'Hide password' : 'Show password'}>
-              {visibleFields.password ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-          {errors.password && <span className="field-error">{errors.password}</span>}
 
-          <label htmlFor="register-confirm-password">Confirm password</label>
-          <div className={`input-with-icon ${errors.confirmPassword ? 'has-error' : ''}`}>
-            <LockKeyhole size={18} />
-            <input id="register-confirm-password" name="confirmPassword" type={visibleFields.confirmPassword ? 'text' : 'password'} autoComplete="new-password" value={formData.confirmPassword} onChange={handleChange} placeholder="Enter your password again" aria-invalid={Boolean(errors.confirmPassword)} />
-            <button type="button" className="input-action" onClick={() => toggleVisibility('confirmPassword')} aria-label={visibleFields.confirmPassword ? 'Hide password' : 'Show password'}>
-              {visibleFields.confirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-          {errors.confirmPassword && <span className="field-error">{errors.confirmPassword}</span>}
 
-          <button type="submit" className="button button-primary auth-submit" disabled={loading}>
-            {loading ? <><span className="button-spinner" /> Creating account…</> : 'Create account'}
-          </button>
-        </form>
-        <p className="auth-footnote">Already have an account? <Link to="/login">Sign in</Link></p>
-      </div>
-    </div>
-  );
-};
 
-export default Register;
+// import { useState } from "react";
+// import "../App.css";
+// import { registerUser } from "../api/auth";
+// import { useNavigate } from "react-router-dom";
+
+// export default function Register() {
+//     const navigate = useNavigate();//Registration ke baad user ko automatically Activate Account page par redirect karna chahiye. User ko Navbar mein dobara Activate Account click nahi karna chahiye.
+//     const [name, setName] = useState("");
+//     const [email, setEmail] = useState("");
+//     const [password, setPassword] = useState("");
+//     const [message, setMessage] = useState("");
+//     const [loading, setLoading] = useState(false);
+
+//     const handleSubmit = async (e) => {
+//         e.preventDefault();
+
+//         if (!name || !email || !password) {
+//             setMessage("Please fill all fields");
+//             return;
+//         }
+//         if (name.trim().length < 4) {
+//     setMessage("Name must contain at least 4 characters");
+//     return;
+// }
+
+//         try {
+//             setLoading(true);//API request ke dauran loading start karta hai
+//             setMessage("");//Purana message clear karta hai.
+
+//             const userData = {
+//                 name,
+//                 email,
+//                 password
+//             };//User ne form mein jo details enter ki hain, unhe ek object mein store karte hain.
+
+//             const result = await registerUser(userData);//registerUser function ko call karke userData ko backend API pe bhejte hain aur response ko result mein store karte hain.
+//             sessionStorage.setItem("activationToken", result.activationToken);
+//             sessionStorage.setItem("activationCode", result.activationCode);
+//             sessionStorage.setItem("email", email);
+//             //setItem() ka use storage mein data save karne ke liye hota hai.
+//             //setItem(ket,value)
+
+//             // Automatically navigate to Activate Account page
+//             navigate("/activate");
+
+//             console.log("Registration response:", result);
+
+//             setMessage(result.message || "Registration successful!");//Backend se aayi hui message ko setMessage ke through display karte hain. Agar backend se message nahi aaya toh default message "Registration successful!" show karte hain.
+
+//             if (result.activationCode) {
+//                 console.log("Activation code:", result.activationCode);
+//             }//Backend response mein activation code hai ya nahi, ye check karta hai.Agar code hai, toh Console mein print karega.
+//         } catch (error) {
+//             console.error("Registration error:", error.response?.data || error.message);//Agar registration ke dauran koi error aata hai, toh usko console mein print karta hai.
+//                     //error.response?.data ka matlab hai ki agar error response available hai toh uska data print karega, warna error.message print karega.
+//                     //data ye hai ki backend se kya response aaya hai, jaise ki error message ya status code.
+//                     //data kuch bhi ho sakta hai, jaise ki error message, status code, ya backend se aayi hui aur information.
+//                     //ham data ke jagah kuch aur likhe sakte hain, jaise ki error.response?.status ya error.response?.headers, lekin data sabse common hai.
+//                     //optional chaining aise kaam karta hai ki agar error.response undefined hai, toh error.response?.data bhi undefined ho jaayega, aur code crash nahi karega.
+//             setMessage(
+//                 error.response?.data?.message || "Registration failed. Please try again."
+//             );//Backend se aayi hui error message ko setMessage ke through display karte hain. Agar backend se message nahi aaya toh default message "Registration failed. Please try again." show karte hain.
+//         } 
+//         finally {
+//             setLoading(false);//API request ke baad loading ko false karte hain, chahe request successful ho ya fail ho.
+//         }
+//     };
+
+//     return (
+//         <div className="auth-container">
+//             <h2>Register</h2>
+
+//             <form onSubmit={handleSubmit}>
+//                 <label>Name:</label>
+//                 <input
+//                     type="text"
+//                     value={name}
+//                     onChange={(e) => setName(e.target.value)}
+//                     placeholder="Enter your name"
+//                 />
+
+//                 <label>Email:</label>
+//                 <input
+//                     type="email"
+//                     value={email}
+//                     onChange={(e) => setEmail(e.target.value)}
+//                     placeholder="Enter your email"
+//                 />
+
+//                 <label>Password:</label>
+//                 <input
+//                     type="password"
+//                     value={password}
+//                     onChange={(e) => setPassword(e.target.value)}
+//                     placeholder="Enter your password"
+//                 />
+
+//                 <button type="submit" disabled={loading}>
+//                     {loading ? "Registering..." : "Register"}
+//                     </button>
+//             </form>
+//             {/*Button ke text ko loading state ke hisaab se change karte hain. Agar loading true hai, toh button pe "Registering..." show karega, warna "Register" show karega.*/}
+                
+
+//             {message && <p>{message}</p>}{/*// Agar message state mein koi value hai, toh usko paragraph tag ke andar display karte hain. Agar message empty hai, toh ye line render nahi hogi.*/}
+//         </div>
+//     );
+// }

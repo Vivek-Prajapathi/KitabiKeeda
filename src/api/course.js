@@ -1,36 +1,37 @@
-import axiosInstance from './axios';
 
-export const courseAPI = {
-  // Create course (admin)
-  createCourse: (data) => axiosInstance.post('/course/create-course', data),
+import axios from "axios";
 
-  // Edit course (admin)
-  editCourse: (id, data) => axiosInstance.put(`/course/edit-course/${id}`, data),
+const courseAPI = axios.create({
+    baseURL: "https://mockapi-mauve.vercel.app/api/v1",
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
 
-  // Get single course
-  getCourse: (id) => axiosInstance.get(`/course/get-course/${id}`),
+courseAPI.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem("token");
 
-  // Get all public courses
-  getCourses: () => axiosInstance.get('/course/get-courses'),
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
 
-  // Get course content (enrolled students)
-  getCourseContent: (id) => axiosInstance.get(`/course/get-course-content/${id}`),
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
-  // Add question to course
-  addQuestion: (data) => axiosInstance.put('/course/add-question', data),
+courseAPI.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        console.error(
+            "API Error:",
+            error.response?.status,
+            error.response?.data || error.message
+        );
 
-  // Add answer to question
-  addAnswer: (data) => axiosInstance.put('/course/add-answer', data),
+        return Promise.reject(error);
+    }
+);
 
-  // Add review to course
-  addReview: (id, data) => axiosInstance.put(`/course/add-review/${id}`, data),
-
-  // Add reply to review (admin)
-  addReply: (data) => axiosInstance.put('/course/add-replay', data),
-
-  // Get all courses for admin dashboard
-  getAllCourses: () => axiosInstance.get('/course/get-all-course-dashboard'),
-
-  // Delete course (admin)
-  deleteCourse: (id) => axiosInstance.delete(`/course/delete-course/${id}`),
-};
+export default courseAPI;

@@ -1,28 +1,21 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 
-export const ProtectedRoute = ({ children, requireAdmin = false, requireInstructor = false }) => {
-  const { isAuthenticated, isAdmin, isInstructor, loading } = useAuth();
+import { Navigate, Outlet } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
+export default function ProtectedRoute({ allowedRoles }) {
+    const { token, user } = useAuth();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
+    if (!token) {
+        return <Navigate to="/login" replace />;
+    }
 
-  if (requireAdmin && !isAdmin) {
-    return <Navigate to="/dashboard" replace />;
-  }
+    if (allowedRoles && !allowedRoles.includes(user?.role)) {
+        if (user?.role === "admin") {
+            return <Navigate to="/admin" replace />;
+        }
 
-  if (requireInstructor && !isInstructor && !isAdmin) {
-    return <Navigate to="/dashboard" replace />;
-  }
+        return <Navigate to="/dashboard" replace />;
+    }
 
-  return children;
-};
+    return <Outlet />;
+}
