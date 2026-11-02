@@ -1,542 +1,119 @@
-
-import { NavLink, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-
-export default function Navbar() {
-    const navigate = useNavigate();
-    const { token, user, logout } = useAuth();
-
-    const isAdmin = user?.role === "admin";
-
-    const avatarUrl =
-        user?.avatar?.url ||
-        user?.profilePicture?.url ||
-        user?.profilePicture ||
-        user?.avatarUrl ||
-        user?.profileImage ||
-        "";
-
-    const displayName =
-        user?.name ||
-        user?.fullName ||
-        user?.username ||
-        user?.email ||
-        "User";
-
-    const initials = displayName
-        .split(/[\s@._-]+/)
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((part) => part[0].toUpperCase())
-        .join("");
-
-    const handleLogout = () => {
-        logout();
-
-        sessionStorage.removeItem("activationToken");
-        sessionStorage.removeItem("activationCode");
-        sessionStorage.removeItem("email");
-
-        navigate("/login");
-    };
-
-    return (
-        <>
-            <style>{`
-                .kk-navbar {
-                    position: sticky;
-                    top: 0;
-                    z-index: 1000;
-
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 24px;
-
-                    width: 100%;
-                    min-height: 82px;
-                    padding: 12px clamp(20px, 3vw, 48px);
-                    box-sizing: border-box;
-
-                    background: #1b211a;
-                    border-bottom: 4px solid #628141;
-                    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
-
-                    font-family: Inter, -apple-system, BlinkMacSystemFont,
-                        "Segoe UI", sans-serif;
-                }
-
-                .kk-navbar-brand {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 9px;
-                    flex-shrink: 0;
-
-                    padding: 0;
-                    border: 0;
-                    background: transparent;
-                    color: #ebd5ab;
-
-                    font-family: inherit;
-                    font-size: clamp(24px, 2.3vw, 32px);
-                    font-weight: 800;
-                    letter-spacing: -1.1px;
-                    white-space: nowrap;
-
-                    cursor: pointer;
-                }
-
-                .kk-navbar-brand-icon {
-                    font-size: 0.85em;
-                    letter-spacing: 0;
-                }
-
-                .kk-navbar-right {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                    gap: clamp(14px, 2vw, 30px);
-                    min-width: 0;
-                }
-
-                .kk-navbar-links {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                    gap: 6px;
-                }
-
-                .kk-navbar-link {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    min-height: 42px;
-                    padding: 10px 15px;
-                    border: 1px solid transparent;
-                    border-radius: 10px;
-
-                    color: #e8d6b2;
-                    background: transparent;
-
-                    font-family: inherit;
-                    font-size: 15px;
-                    font-weight: 600;
-                    text-decoration: none;
-                    white-space: nowrap;
-
-                    transition: background 0.2s ease,
-                        color 0.2s ease,
-                        border-color 0.2s ease;
-                }
-
-                .kk-navbar-link:hover {
-                    background: rgba(255, 255, 255, 0.07);
-                    color: #ffffff;
-                }
-
-                .kk-navbar-link.active {
-                    background: rgba(139, 174, 102, 0.13);
-                    border-color: rgba(139, 174, 102, 0.22);
-                    color: #a8ca85;
-                }
-
-                .kk-navbar-profile {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                    flex-shrink: 0;
-                }
-
-                .kk-navbar-avatar {
-                    display: grid;
-                    place-items: center;
-                    width: 46px;
-                    height: 46px;
-                    padding: 3px;
-                    overflow: hidden;
-
-                    border: 2px solid #789456;
-                    border-radius: 50%;
-                    background: #303a2c;
-                    color: #34432d;
-                    text-decoration: none;
-
-                    box-shadow: 0 0 0 3px rgba(120, 148, 86, 0.12);
-                    transition: border-color 0.2s ease,
-                        box-shadow 0.2s ease,
-                        transform 0.2s ease;
-                }
-
-                .kk-navbar-avatar:hover {
-                    border-color: #c0d9a5;
-                    box-shadow: 0 0 0 4px rgba(120, 148, 86, 0.22);
-                    transform: translateY(-1px);
-                }
-
-                .kk-navbar-avatar-inner {
-                    position: relative;
-                    display: grid;
-                    place-items: center;
-
-                    width: 100%;
-                    height: 100%;
-                    overflow: hidden;
-                    border-radius: 50%;
-
-                    background: #e9efdf;
-                    font-size: 14px;
-                    font-weight: 800;
-                }
-
-                .kk-navbar-avatar-inner img {
-                    position: absolute;
-                    inset: 0;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    border-radius: 50%;
-                }
-
-                .kk-navbar-chevron {
-                    color: #a9bc96;
-                    font-size: 11px;
-                }
-
-                .kk-navbar-logout {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-shrink: 0;
-
-                    min-height: 44px;
-                    padding: 11px 23px;
-                    border: 1px solid transparent;
-                    border-radius: 11px;
-
-                    background: #628141;
-                    color: #ffffff;
-
-                    font-family: inherit;
-                    font-size: 14px;
-                    font-weight: 700;
-                    white-space: nowrap;
-                    cursor: pointer;
-
-                    transition: background 0.2s ease,
-                        transform 0.2s ease;
-                }
-
-                .kk-navbar-logout:hover {
-                    background: #789653;
-                    transform: translateY(-1px);
-                }
-
-                @media (max-width: 950px) {
-                    .kk-navbar {
-                        flex-wrap: wrap;
-                        gap: 12px;
-                        padding: 13px 20px;
-                    }
-
-                    .kk-navbar-right {
-                        flex-wrap: wrap;
-                        gap: 10px;
-                    }
-
-                    .kk-navbar-links {
-                        flex-wrap: wrap;
-                    }
-                }
-
-                @media (max-width: 580px) {
-                    .kk-navbar {
-                        justify-content: center;
-                    }
-
-                    .kk-navbar-brand {
-                        width: 100%;
-                        justify-content: center;
-                        font-size: 25px;
-                    }
-
-                    .kk-navbar-right {
-                        width: 100%;
-                        justify-content: center;
-                    }
-
-                    .kk-navbar-links {
-                        justify-content: center;
-                        gap: 2px;
-                    }
-
-                    .kk-navbar-link {
-                        min-height: 38px;
-                        padding: 8px 10px;
-                        font-size: 13px;
-                    }
-
-                    .kk-navbar-avatar {
-                        width: 40px;
-                        height: 40px;
-                    }
-
-                    .kk-navbar-logout {
-                        min-height: 39px;
-                        padding: 9px 14px;
-                    }
-                }
-            `}</style>
-
-            <nav className="kk-navbar">
-                <button
-                    type="button"
-                    className="kk-navbar-brand"
-                    onClick={() => navigate("/")}
-                    aria-label="KitabiKeeda home"
-                >
-                    KitabiKeeda
-                    <span className="kk-navbar-brand-icon">📚</span>
-                </button>
-
-                <div className="kk-navbar-right">
-                    <div className="kk-navbar-links">
-                        <NavLink
-                            to="/"
-                            end
-                            className={({ isActive }) =>
-                                `kk-navbar-link${isActive ? " active" : ""}`
-                            }
-                        >
-                            Home
-                        </NavLink>
-
-                        <NavLink
-                            to="/courses"
-                            end
-                            className={({ isActive }) =>
-                                `kk-navbar-link${isActive ? " active" : ""}`
-                            }
-                        >
-                            Courses
-                        </NavLink>
-
-                        {token && isAdmin && (
-                            <NavLink
-                                to="/admin/lms-marketplace"
-                                className={({ isActive }) =>
-                                    `kk-navbar-link${isActive ? " active" : ""}`
-                                }
-                            >
-                                LMS Marketplace
-                            </NavLink>
-                        )}
-
-                        {token && (
-                            <NavLink
-                                to={isAdmin ? "/admin" : "/dashboard"}
-                                end
-                                className={({ isActive }) =>
-                                    `kk-navbar-link${isActive ? " active" : ""}`
-                                }
-                            >
-                                Dashboard
-                            </NavLink>
-                        )}
-
-                        {!token && (
-                            <>
-                                <NavLink
-                                    to="/register"
-                                    className={({ isActive }) =>
-                                        `kk-navbar-link${isActive ? " active" : ""}`
-                                    }
-                                >
-                                    Register
-                                </NavLink>
-
-                                <NavLink
-                                    to="/login"
-                                    className={({ isActive }) =>
-                                        `kk-navbar-link${isActive ? " active" : ""}`
-                                    }
-                                >
-                                    Login
-                                </NavLink>
-                            </>
-                        )}
-                    </div>
-
-                    {token && (
-                        <>
-                            <div className="kk-navbar-profile">
-                                <NavLink
-                                    to="/user/profile"
-                                    className="kk-navbar-avatar"
-                                    title={`Open ${displayName}'s profile`}
-                                    aria-label="Open profile"
-                                >
-                                    <span className="kk-navbar-avatar-inner">
-                                        {initials || "U"}
-
-                                        {avatarUrl && (
-                                            <img
-                                                src={avatarUrl}
-                                                alt=""
-                                                onError={(event) => {
-                                                    event.currentTarget.style.display =
-                                                        "none";
-                                                }}
-                                            />
-                                        )}
-                                    </span>
-                                </NavLink>
-
-                                <span
-                                    className="kk-navbar-chevron"
-                                    aria-hidden="true"
-                                >
-                                    ▼
-                                </span>
-                            </div>
-
-                            <button
-                                type="button"
-                                className="kk-navbar-logout"
-                                onClick={handleLogout}
-                            >
-                                Logout
-                            </button>
-                        </>
-                    )}
+import { useState } from 'react';
+import { BookOpen, ChevronDown, LayoutDashboard, LogOut, Menu, UserRound, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+
+const Navbar = () => {
+  const { isAuthenticated, user, isAdmin, logout } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  const closeMenus = () => {
+    setMobileMenuOpen(false);
+    setProfileDropdownOpen(false);
+  };
+
+  const handleLogout = async () => {
+    closeMenus();
+    await logout();
+    navigate('/');
+  };
+
+  const isActive = (path) =>
+    path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
+
+  return (
+    <header className="site-header">
+      <nav className="site-nav" aria-label="Main navigation">
+        <Link to="/" className="brand" onClick={closeMenus} aria-label="KitabiKeeda home">
+          <span className="brand-mark"><BookOpen size={21} strokeWidth={2.2} /></span>
+          <span>Kitabi<span>Keeda</span></span>
+        </Link>
+
+        <div className="nav-links">
+          <Link className={isActive('/') ? 'active' : ''} to="/">Home</Link>
+          <Link className={isActive('/courses') ? 'active' : ''} to="/courses">Courses</Link>
+          <Link className={isActive('/marketplace') ? 'active' : ''} to="/marketplace">LMS Marketplace</Link>
+          {isAuthenticated && (
+            <Link className={isActive('/dashboard') ? 'active' : ''} to="/dashboard">
+              My learning
+            </Link>
+          )}
+        </div>
+
+        <div className="nav-actions">
+          {isAuthenticated ? (
+            <div className="profile-menu">
+              <button
+                type="button"
+                className="profile-trigger"
+                onClick={() => setProfileDropdownOpen((open) => !open)}
+                aria-expanded={profileDropdownOpen}
+                aria-label="Open account menu"
+              >
+                {user?.avatar?.url ? (
+                  <img src={user.avatar.url} alt="" className="avatar avatar-image" />
+                ) : (
+                  <span className="avatar"><UserRound size={17} /></span>
+                )}
+                <span className="profile-name">{user?.name || 'My account'}</span>
+                <ChevronDown size={16} />
+              </button>
+              {profileDropdownOpen && (
+                <div className="profile-dropdown">
+                  <Link to="/dashboard/profile" onClick={closeMenus}>
+                    <UserRound size={16} /> Profile
+                  </Link>
+                  <Link to={isAdmin ? '/admin' : '/dashboard'} onClick={closeMenus}>
+                    <LayoutDashboard size={16} /> {isAdmin ? 'Admin dashboard' : 'Dashboard'}
+                  </Link>
+                  <button type="button" onClick={handleLogout}>
+                    <LogOut size={16} /> Sign out
+                  </button>
                 </div>
-            </nav>
-        </>
-    );
-}
+              )}
+            </div>
+          ) : (
+            <div className="auth-links">
+              <Link className="nav-login" to="/login">Log in</Link>
+              <Link className="button button-primary button-small" to="/register">Get started</Link>
+            </div>
+          )}
+          <button
+            type="button"
+            className="mobile-menu-toggle"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            aria-expanded={mobileMenuOpen}
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          >
+            {mobileMenuOpen ? <X size={21} /> : <Menu size={21} />}
+          </button>
+        </div>
+      </nav>
+      {mobileMenuOpen && (
+        <div className="mobile-nav">
+          <Link to="/" onClick={closeMenus}>Home</Link>
+          <Link to="/courses" onClick={closeMenus}>Courses</Link>
+          <Link to="/marketplace" onClick={closeMenus}>LMS Marketplace</Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard" onClick={closeMenus}>My learning</Link>
+              <Link to="/dashboard/profile" onClick={closeMenus}>Profile</Link>
+              {isAdmin && <Link to="/admin" onClick={closeMenus}>Admin dashboard</Link>}
+              <button type="button" onClick={handleLogout}><LogOut size={17} /> Sign out</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" onClick={closeMenus}>Log in</Link>
+              <Link to="/register" onClick={closeMenus}>Create account</Link>
+            </>
+          )}
+        </div>
+      )}
+    </header>
+  );
+};
 
-
-
-
-// import { NavLink, useNavigate } from "react-router-dom";
-// import useAuth from "../hooks/useAuth";
-
-// export default function Navbar() {
-//     const navigate = useNavigate();
-//     const { token, user, logout } = useAuth();
-
-//     const isAdmin = user?.role === "admin";
-
-//     const handleLogout = () => {
-//         logout();
-
-//         sessionStorage.removeItem("activationToken");
-//         sessionStorage.removeItem("activationCode");
-//         sessionStorage.removeItem("email");
-
-//         navigate("/login");
-//     };
-
-//     const getStyle = ({ isActive }) => ({
-//         color: isActive ? "#8BAE66" : "#EBD5AB",
-//         textDecoration: isActive ? "underline" : "none",
-//         fontWeight: isActive ? "bold" : "500",
-//     });
-
-//     return (
-//         <nav style={styles.navbar}>
-//             <h2 style={styles.logo}>
-//                 KitabiKeeda 📚🐛🧟
-//             </h2>
-
-//             <div style={styles.links}>
-//                 <NavLink to="/" style={getStyle}>
-//                     Home
-//                 </NavLink>
-
-//                 {!token && (
-//                     <>
-//                         <NavLink to="/register" style={getStyle}>
-//                             Register
-//                         </NavLink>
-
-//                         <NavLink to="/activate" style={getStyle}>
-//                             Activate Account
-//                         </NavLink>
-
-//                         <NavLink to="/login" style={getStyle}>
-//                             Login
-//                         </NavLink>
-//                     </>
-//                 )}
-
-//                 {token && (
-//                     <>
-//                         {isAdmin ? (
-//                             <NavLink to="/admin" style={getStyle}>
-//                                 Admin Dashboard
-//                             </NavLink>
-//                         ) : (
-//                             <NavLink to="/dashboard" style={getStyle}>
-//                                 Dashboard
-//                             </NavLink>
-//                         )}
-
-//                         <NavLink to="/user/profile" style={getStyle}>
-//                             Profile
-//                         </NavLink>
-
-//                         <button
-//                             onClick={handleLogout}
-//                             style={styles.button}
-//                         >
-//                             Logout
-//                         </button>
-//                     </>
-//                 )}
-//             </div>
-//         </nav>
-//     );
-// }
-
-// const styles = {
-//     navbar: {
-//         display: "flex",
-//         justifyContent: "space-between",
-//         alignItems: "center",
-//         flexWrap: "wrap",
-//         gap: "15px",
-//         padding: "15px 30px",
-//         backgroundColor: "#1B211A",
-//         color: "#EBD5AB",
-//         borderBottom: "4px solid #628141",
-//         boxSizing: "border-box",
-//         width: "100%",
-//     },
-
-//     logo: {
-//         margin: 0,
-//         fontSize: "clamp(20px, 2.5vw, 32px)",
-//         fontWeight: "800",
-//         color: "#EBD5AB",
-//     },
-
-//     links: {
-//         display: "flex",
-//         alignItems: "center",
-//         justifyContent: "center",
-//         flexWrap: "wrap",
-//         gap: "24px",
-//     },
-
-//     button: {
-//         padding: "10px 20px",
-//         backgroundColor: "#628141",
-//         color: "#FFFFFF",
-//         border: "none",
-//         borderRadius: "8px",
-//         fontSize: "16px",
-//         fontWeight: "600",
-//         cursor: "pointer",
-//     },
-// };
+export default Navbar;

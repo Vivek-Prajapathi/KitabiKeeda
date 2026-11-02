@@ -1,98 +1,139 @@
+import { createContext, useContext, useState, useEffect } from 'react';
+import { authAPI } from '../api/auth';
+import { toast } from 'sonner';
 
-import { createContext, useState } from "react";
-import {
-    UpdateUserInfoApi,
-    UpdateProfilePictureApi,
-    UpdateProfilePasswordApi,
-} from "../api/auth";
-
-export const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState(
-        localStorage.getItem("token") || null
-    );
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const [user, setUser] = useState(() => {
-        try {
-            return JSON.parse(localStorage.getItem("user")) || null;
-        } catch {
-            return null;
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const storedUser = localStorage.getItem('user');
+
+        if (token && storedUser) {
+          setUser(JSON.parse(storedUser));
+          // Verify token is still valid
+          await authAPI.getMe();
         }
-    });
-
-    // Login
-    const login = (userData, accessToken) => {
-        setUser(userData);
-        setToken(accessToken);
-
-        localStorage.setItem("user", JSON.stringify(userData));
-        localStorage.setItem("token", accessToken);
-    };
-
-    // Logout
-    const logout = () => {
+      } catch (error) {
+        // Token is invalid, clear storage
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
         setUser(null);
-        setToken(null);
-
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    // Update Profile Information
-    const updateUserInfo = async ({ name }) => {
-        const response = await UpdateUserInfoApi({ name });
+    initializeAuth();
+  }, []);
 
-        const updatedUser = response.user
-            ? response.user
-            : { ...user, name };
+  const login = async (email, password) => {
+    try {
+      const response = await authAPI.login({ email, password });
+      if (response.data.success) {
+        const { user, accessToken } = response.data;
+        setUser(user);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('user', JSON.stringify(user));
+        toast.success('Login successful!');
+        return { success: true, user };
+      }
+      const message = response.data.message || 'Login failed';
+      toast.error(message);
+      return { success: false, message };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Login failed';
+      toast.error(message);
+      return { success: false, message };
+    }
+  };
 
-        setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
+  const register = async (name, email, password) => {
+    try {
+      const response = await authAPI.register({ name, email, password });
+      if (response.data.success) {
+        const { activationToken, activationCode, mailSent, mailUrl } = response.data;
+        toast.success(response.data.message);
+        return {
+          success: true,
+          activationToken,
+          activationCode,
+          mailSent,
+          mailUrl,
+        };
+      }
+      const message = response.data.message || 'Registration failed';
+      toast.error(message);
+      return { success: false, message };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Registration failed';
+      toast.error(message);
+      return { success: false, message };
+    }
+  };
 
-        return response;
-    };
+  const activateAccount = async (activationToken, activationCode) => {
+    try {
+      const response = await authAPI.activateUser({ activation_token: activationToken, activation_code: activationCode });
+      if (response.data.success) {
+        setUser(response.data.user);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        toast.success('Account activated successfully!');
+        return { success: true, user: response.data.user };
+      }
+      const message = response.data.message || 'Activation failed';
+      toast.error(message);
+      return { success: false, message };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Activation failed';
+      toast.error(message);
+      return { success: false, message };
+    }
+  };
 
-    // Update Profile Picture
-    const updateProfilePicture = async (avatar) => {
-        const response = await UpdateProfilePictureApi({ avatar });
+  const logout = async () => {
+    try {
+      await authAPI.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('user');
+      toast.success('Logged out successfully');
+    }
+  };
 
-        const updatedUser = response.user
-            ? response.user
-            : {
-                ...user,
-                avatar: response.avatar || avatar,
-            };
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+  };
 
-        setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
+  const value = {
+    user,
+    loading,
+    login,
+    register,
+    activateAccount,
+    logout,
+    updateUser,
+    isAuthenticated: !!user,
+    isAdmin: user?.role === 'admin',
+    isInstructor: user?.role === 'instructor',
+  };
 
-        return response;
-    };
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
 
-    // Update Password
-    const updatePassword = async ({ oldPassword, newPassword }) => {
-        const response = await UpdateProfilePasswordApi({
-            oldPassword,
-            newPassword,
-        });
-
-        return response;
-    };
-
-    return (
-        <AuthContext.Provider
-            value={{
-                token,
-                user,
-                login,
-                logout,
-                updateUserInfo,
-                updateProfilePicture,
-                updatePassword,
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };

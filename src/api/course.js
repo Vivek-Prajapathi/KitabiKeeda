@@ -1,37 +1,36 @@
+import axiosInstance from './axios';
 
-import axios from "axios";
+export const courseAPI = {
+  // Create course (admin)
+  createCourse: (data) => axiosInstance.post('/course/create-course', data),
 
-const courseAPI = axios.create({
-    baseURL: "https://mockapi-mauve.vercel.app/api/v1",
-    headers: {
-        "Content-Type": "application/json",
-    },
-});
+  // Edit course (admin)
+  editCourse: (id, data) => axiosInstance.put(`/course/edit-course/${id}`, data),
 
-courseAPI.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem("token");
+  // Get single course
+  getCourse: (id) => axiosInstance.get(`/course/get-course/${id}`),
 
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
+  // Get all public courses
+  getCourses: () => axiosInstance.get('/course/get-courses'),
 
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
+  // Get course content (enrolled students)
+  getCourseContent: (id) => axiosInstance.get(`/course/get-course-content/${id}`),
 
-courseAPI.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        console.error(
-            "API Error:",
-            error.response?.status,
-            error.response?.data || error.message
-        );
+  // Add question to course
+  addQuestion: (data) => axiosInstance.put('/course/add-question', data),
 
-        return Promise.reject(error);
-    }
-);
+  // Add answer to question
+  addAnswer: (data) => axiosInstance.put('/course/add-answer', data),
 
-export default courseAPI;
+  // Add review to course
+  addReview: (id, data) => axiosInstance.put(`/course/add-review/${id}`, data),
+
+  // Add reply to review (admin)
+  addReply: (data) => axiosInstance.put('/course/add-replay', data),
+
+  // Get all courses for admin dashboard
+  getAllCourses: () => axiosInstance.get('/course/get-all-course-dashboard'),
+
+  // Delete course (admin)
+  deleteCourse: (id) => axiosInstance.delete(`/course/delete-course/${id}`),
+};
